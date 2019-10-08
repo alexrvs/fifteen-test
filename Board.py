@@ -22,6 +22,8 @@ class Board:
 
         self.e_loc = [MAX_ROW - 1, MAX_COL - 1]
 
+        self.moves = {0: self.move_up, 1: self.move_down, 2: self.move_right, 3: self.move_left}
+
     def __repr__(self):
         """Represent the board"""
         for i in range(MAX_ROW):
@@ -32,16 +34,30 @@ class Board:
 
     def refresh(self):
         """Clear this screen and print the board"""
+
         system("clear")
         print('Welcome to the game of the Fifteen\n')
         print(self)
+
+        if self.board == self.goal:
+            print('\nCongrats! You Won!')
+            return False
+
+        return True
 
     def shuffle(self):
         """Randomizes board using succession of legal moves"""
         seed()
         for i in range(SHUFFLE_MAGNITUDE):
             m = randint(0, 3)
+            self.moves[m](self.board, self.e_loc)
 
+        # optionally move the empty space to the lower right corner
+        for i in range(MAX_ROW):
+            self.moves[2](self.board, self.e_loc)
+
+        for i in range(MAX_COL):
+            self.moves[1](self.board, self.e_loc)
 
     def move(self, board, e_loc, x, y):
         """Make legal move"""
@@ -68,4 +84,7 @@ class Board:
     def move_left(self, board, e_loc):
         return self.move(board, e_loc, 0, -1)
 
+    def solve(self):
+        """Solves the game using BSF algorithm"""
+        #self.board = deepcopy(self.goal)
 

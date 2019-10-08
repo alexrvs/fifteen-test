@@ -6,7 +6,7 @@ b = Board()
 
 
 def main():
-    print(b)
+    b.shuffle()
     with keyboard.Listener(
             on_press=on_press,
             on_release=on_release) as listener:
@@ -28,13 +28,10 @@ def on_release(key):
         b.board, b.e_loc = b.move_left(b.board, b.e_loc)
     elif key == keyboard.Key.down:
         b.board, b.e_loc = b.move_down(b.board, b.e_loc)
-    b.refresh()
+    elif key == keyboard.Key.shift:
+        b.solve()
+    return b.refresh()
 
-
-listener = keyboard.Listener(
-    on_press=on_press,
-    on_release=on_release)
-listener.start()
 
 if __name__ == '__main__':
     main()
